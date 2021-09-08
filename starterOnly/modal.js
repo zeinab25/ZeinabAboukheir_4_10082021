@@ -74,8 +74,11 @@ function showSuccess(input, span) {
 
 // check input lenght
 function checkLength(input, span) {
-	if (input.value.length < 2) {
+	const re = /\d+/;
+	if (input.value.trim().length < 2) {
 		showError(input, `Veuillez saisir au minimum 2 charactères.`, span);
+	} else if (re.test(input.value)) {
+		showError(input, `Ce champs n'accepte pas les chiffres.`, span);
 	} else {
 		showSuccess(input, span);
 	}
@@ -99,9 +102,9 @@ const todayDay = today.getDate();
 
 // check birthdate
 function calculAge(input, span) {
-	const birhtYear = parseInt(input.value.substr(0, 4));
-	const birthMonth = parseInt(input.value.substr(5, 2));
-	const birthDay = parseInt(input.value.substr(8, 2));
+	const birhtYear = parseInt(input.value.substring(0, 4));
+	const birthMonth = parseInt(input.value.substring(5, 2));
+	const birthDay = parseInt(input.value.substring(8, 2));
 	const age = todayYear - birhtYear;
 
 	if (birhtYear < 1920) {
@@ -123,7 +126,7 @@ function calculAge(input, span) {
 
 // check participation's number
 function checkQuantity(input, span) {
-	if (input.value == "") {
+	if (input.value == "" || parseInt(input.value) < 0) {
 		showError(input, "Veuillez saisir un nombre entre 0 et 99.", span);
 	} else if (input.value >= 99) {
 		showError(input, "Veuillez saisir un nombre inférieur ou égal à 99.", span);
@@ -140,7 +143,7 @@ function testCheckbox(input, span) {
 			nbrBox++;
 		}
 	}
-	if (nbrBox == 0 && quantity.value != 0) {
+	if (nbrBox == 0 && quantity.value > 0) {
 		showError(checkboxCity, "Veuillez sélectionner au moins une ville.", span);
 	} else if (quantity.value == 0 && nbrBox > 0 && quantity.value != "") {
 		showError(
@@ -148,7 +151,7 @@ function testCheckbox(input, span) {
 			"Vous n'avez participé à aucun tournois. Veuillez vider ce champs.",
 			span
 		);
-	} else if (nbrBox > quantity.value && quantity.value != "") {
+	} else if (nbrBox > quantity.value && quantity.value > 0) {
 		showError(
 			checkboxCity,
 			"Le nombre de villes sélectionnées doit être inférieur ou égal à " +
