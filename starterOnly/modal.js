@@ -138,7 +138,7 @@ function checkQuantity(input, span) {
 //check checkbox
 function testCheckbox(input, span) {
 	let nbrBox = 0;
-	for (var i = 0; i < input.length; i++) {
+	for (let i in input) {
 		if (input[i].checked) {
 			nbrBox++;
 		}
